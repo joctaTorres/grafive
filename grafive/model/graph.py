@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any, Set
 
@@ -20,6 +21,14 @@ class Node:
     @property
     def degree(self):
         return len(self.connections)
+    
+    def connect(self, node: Node):
+        self.connections.add(node)
+
+    def disconnect(self, node: Node):
+        with suppress(KeyError):
+            self.connections.remove(node)
+
 
 
 class Graph:

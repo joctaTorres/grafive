@@ -11,6 +11,7 @@ def test_node():
     foo = Node()
     assert foo
     assert foo.connections == set()
+    assert foo.degree == 0
 
     foo = Node(color=Color.RED)
     assert foo.color == Color.RED
@@ -21,6 +22,20 @@ def test_node():
 
     whatever = Node(connections={foo, bar})
     assert whatever.degree == 2
+
+def test_node_connect():
+    foo = Node()
+    bar = Node()
+
+    foo.connect(bar)
+    assert foo.degree == 1
+
+    foo.disconnect(bar)
+    assert foo.degree == 0
+
+    # test supress
+    foo.disconnect(bar)
+
 
 
 def test_graph():
