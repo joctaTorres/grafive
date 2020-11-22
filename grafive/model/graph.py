@@ -12,7 +12,7 @@ from grafive.model.color import Color
 class Node:
     id: int = field(default_factory= lambda: hash(uuid4()))
     color: Color = Color.BLACK
-    connections: Set[Node] = field(default_factory=list)
+    connections: Set[Node] = field(default_factory=set)
 
     def __hash__(self):
         return self.id
