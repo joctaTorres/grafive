@@ -38,4 +38,13 @@ class Node:
 class Graph:
     def __init__(self, *nodes):
         self.nodes = set(nodes)
+    
+    def nodes_not_connected_to(self, node):
+        not_connected = self.nodes - {node, *node.connections}
+
+        return {
+            graph_node
+            for graph_node in not_connected
+            if node not in graph_node.connections
+        }
 
