@@ -20,3 +20,5 @@ The WP algorithm finds out the best solution (minimum chromatic number) in the s
 
 ### Useful links
 [Trimming Graphs Using Clausal Proof Optimization](https://arxiv.org/pdf/1907.00929.pdf)
+
+[DIMACS graph coloring instances. (2016)](https://mat.gsia.cmu.edu/COLOR/instances.html)
