@@ -55,3 +55,11 @@ def test_graph():
 
     graph = Graph(foo, bar)
     assert graph.nodes == {foo, bar}
+
+def test_graph_chromatic_number():
+    foo = Node(color=Color.RED)
+    bar = Node(color=Color.BLUE)
+    bar_again = Node(color=Color.BLUE)
+
+    graph = Graph(foo, bar, bar_again)
+    assert graph.chromatic_number == 2
