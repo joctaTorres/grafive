@@ -1,14 +1,9 @@
 from grafive.model.graph import Node, Graph
-from grafive.model.color import Color
+from grafive.model.color import iterate_colors
 
 from operator import attrgetter
 
-def get_color() -> Color:
-    for color in list(Color):
-        yield color
-
-
-def welsh_powell(graph: Graph, color_generator=get_color()):
+def welsh_powell(graph: Graph, color_generator=iterate_colors()):
     sorted_nodes = sorted(
         graph.nodes,
         key=attrgetter("degree"),
@@ -22,7 +17,12 @@ def welsh_powell(graph: Graph, color_generator=get_color()):
         color = next(color_generator)
         node.color = color
 
-        non_adjacent_nodes = graph.nodes_not_connected_to(node)
+        non_adjacent_nodes = {
+            node
+            for node in
+            graph.nodes_not_connected_to(node)
+            if not node.color
+        }
 
         non_adjacent_nodes_sorted = sorted(
             non_adjacent_nodes,
