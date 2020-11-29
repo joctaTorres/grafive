@@ -42,7 +42,11 @@ class Node:
 class Graph:
     def __init__(self, *nodes):
         self.nodes = set(nodes)
-    
+
+    @property
+    def chromatic_number(self):
+        return len({node.color for node in self.nodes if node.color})
+
     def nodes_not_connected_to(self, node):
         not_connected = self.nodes - {node, *node.connections}
 
