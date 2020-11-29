@@ -19,6 +19,9 @@ class Node:
     def __hash__(self):
         return self.id
     
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+    
     def __repr__(self):
         return f"Node(id={self.id}, color={self.color}, content={self.content})"
     
@@ -28,6 +31,7 @@ class Node:
     
     def connect(self, node: Node):
         self.connections.add(node)
+        node.connections.add(self)
 
     def disconnect(self, node: Node):
         with suppress(KeyError):
