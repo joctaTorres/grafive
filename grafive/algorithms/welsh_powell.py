@@ -1,7 +1,8 @@
-from grafive.model.graph import Node, Graph
-from grafive.model.color import iterate_colors
-
 from operator import attrgetter
+
+from grafive.model.color import iterate_colors
+from grafive.model.graph import Graph
+
 
 def welsh_powell(graph: Graph, color_generator=iterate_colors()):
     sorted_nodes = sorted(

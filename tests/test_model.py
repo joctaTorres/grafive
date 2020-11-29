@@ -1,5 +1,6 @@
-from grafive.model.graph import Node, Graph
 from grafive.model.color import Color
+from grafive.model.graph import Graph, Node
+
 
 def test_node_hash_eq():
     foo = Node()
@@ -11,6 +12,7 @@ def test_node_hash_eq():
     bar = Node(id=42)
 
     assert foo == bar
+
 
 def test_node():
     foo = Node()
@@ -27,6 +29,7 @@ def test_node():
 
     whatever = Node(connections={foo, bar})
     assert whatever.degree == 2
+
 
 def test_node_connect():
     foo = Node()
@@ -48,13 +51,14 @@ def test_graph():
     assert graph.nodes == set()
 
     foo = Node()
-    bar =  Node()
+    bar = Node()
 
     graph = Graph(foo)
     assert graph.nodes == {foo}
 
     graph = Graph(foo, bar)
     assert graph.nodes == {foo, bar}
+
 
 def test_graph_chromatic_number():
     foo = Node(color=Color.RED)

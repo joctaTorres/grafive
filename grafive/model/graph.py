@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from contextlib import suppress
 from dataclasses import dataclass, field
-from typing import Any, Set, Optional, Dict
-
-from uuid import uuid4, UUID
+from typing import Any, Dict, Optional, Set
+from uuid import uuid4
 
 from grafive.model.color import Color
 

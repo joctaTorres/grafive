@@ -1,5 +1,6 @@
-from enum import Enum
 import random
+from enum import Enum
+
 
 class Color(Enum):
     RED = "red"
@@ -30,7 +31,7 @@ class Color(Enum):
     
 
 
-def iterate_colors() -> Color:
+def iterate_colors():
     for color in list(Color):
         yield color
 
