@@ -1,3 +1,4 @@
+from collections import defaultdict
 from grafive.model.graph import Node, Graph
 
 
@@ -34,3 +35,29 @@ def graph_from_csv(path):
                 yield line.split(",")
     
     return graph_from_description(csv_line_generator(path))
+
+
+def graph_from_edge(path):
+    def edge_line_generator(path):
+        with open(path, "r") as edge_file:
+            for line in edge_file:
+                line = line.strip()
+                yield line.split(" ")
+    
+    edge_generator = edge_line_generator(path)
+
+    # ignore header
+    next(edge_generator)
+
+    node_connections = defaultdict(list)
+    for _, node, connection in edge_generator:
+        node_connections[node].append(connection)
+    
+    def description_generator(node_connections):
+        for key, values in node_connections.items():
+            values = ";".join(values) or ""
+            yield (key, values)
+    
+    return graph_from_description(description_generator(node_connections))
+
+
