@@ -4,7 +4,7 @@ from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any, Set, Optional, Dict
 
-from uuid import uuid4 , UUID
+from uuid import uuid4, UUID
 
 from grafive.model.color import Color
 
@@ -42,6 +42,12 @@ class Node:
 class Graph:
     def __init__(self, *nodes):
         self.nodes = set(nodes)
+
+    def __repr__(self):
+        def get_connection_ids(start_node):
+            return "-".join([str(node.id) for node in start_node.connections])
+
+        return "\n".join([f"[{node.id}][{node.color}] :: {get_connection_ids(node)}" for node in self.nodes])
 
     @property
     def chromatic_number(self):
