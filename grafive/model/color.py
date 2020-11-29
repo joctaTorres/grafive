@@ -12,6 +12,22 @@ class Color(Enum):
     YELLOW = "yellow"
     CYAN = "cyan"
     MAGENTA = "magenta"
+    MINT = "mint"
+    PURPLE = "purple"
+    ORANGE = "orange"
+    LIME = "lime"
+    AQUA = "aqua"
+    NAVY = "navy"
+    CORAL = "coral"
+    TEAL = "teal"
+    MUSTARD = "mustard"
+    GREY = "grey"
+    BROWN = "brown"
+    INDIGO = "indigo"
+    AMBER = "amber"
+    PEACH = "peach"
+    MAROON = "maroon"
+    
 
 
 def iterate_colors() -> Color:
