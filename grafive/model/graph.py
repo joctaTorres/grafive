@@ -50,8 +50,11 @@ class Graph:
         return "\n".join([f"[{node.id}][{node.color}] :: {get_connection_ids(node)}" for node in self.nodes])
 
     @property
+    def colors(self):
+        return {node.color for node in self.nodes if node.color}
+    @property
     def chromatic_number(self):
-        return len({node.color for node in self.nodes if node.color})
+        return len(self.colors)
 
     def nodes_not_connected_to(self, node):
         not_connected = self.nodes - {node, *node.connections}
