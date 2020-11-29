@@ -26,4 +26,11 @@ def graph_from_description(description):
     return Graph(*set(nodes.values()))
 
 
-
+def graph_from_csv(path):
+    def csv_line_generator(path):
+        with open(path, "r") as csv_file:
+            for line in csv_file:
+                line = line.strip()
+                yield line.split(",")
+    
+    return graph_from_description(csv_line_generator(path))
