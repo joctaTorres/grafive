@@ -3,8 +3,12 @@ from grafive.model.color import Color
 
 from operator import attrgetter
 
+def get_color() -> Color:
+    for color in list(Color):
+        yield color
 
-def welsh_powell(graph: Graph):
+
+def welsh_powell(graph: Graph, color_generator=get_color()):
     sorted_nodes = sorted(
         graph.nodes,
         key=attrgetter("degree"),
@@ -15,7 +19,7 @@ def welsh_powell(graph: Graph):
         if node.color:
             continue
 
-        color = get_new_color()
+        color = next(color_generator)
         node.color = color
 
         non_adjacent_nodes = graph.nodes_not_connected_to(node)
@@ -36,15 +40,3 @@ def welsh_powell(graph: Graph):
 
         for node_to_color in nodes_to_color:
             node_to_color.color = color
-
-
-unused_colors = [
-    Color.BLACK,
-    Color.BLUE,
-    Color.RED,
-    Color.GREEN,
-    Color.PINK,
-]
-
-def get_new_color() -> Color:
-    return unused_colors.pop()
