@@ -8,7 +8,7 @@ It is used to solve a variety of real-world problems, such as like map coloring,
 The number of the least possible colors to be used in a graph is called chromatic number.
 
 Various heuristic methods have been developed in order to solve the GCP.
-Here you wil find the implementaion for Welsh and Powell.
+Here you will find the implementaion for Welsh and Powell method.
 The WP algorithm finds out the best solution (minimum chromatic number) in the shortest time [1].
 
 ***
