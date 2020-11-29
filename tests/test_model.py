@@ -1,11 +1,16 @@
 from grafive.model.graph import Node, Graph
 from grafive.model.color import Color
 
-def test_node_hash():
+def test_node_hash_eq():
     foo = Node()
-    bar =  Node()
+    bar = Node()
 
     assert foo != bar
+
+    foo = Node(id=42)
+    bar = Node(id=42)
+
+    assert foo == bar
 
 def test_node():
     foo = Node()
@@ -35,7 +40,6 @@ def test_node_connect():
 
     # test supress
     foo.disconnect(bar)
-
 
 
 def test_graph():
