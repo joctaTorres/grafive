@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import Callable, Set
+from itertools import combinations
+
 from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional, Set
@@ -39,9 +42,23 @@ class Node:
 
 
 class Graph:
-    def __init__(self, *nodes):
+    def __init__(
+        self,
+        *nodes,
+        connection_factory: Callable[[Node, Node], bool]=None
+    ):
         self.nodes = set(nodes)
+        self.connection_factory = connection_factory
 
+        if connection_factory:
+            self._create_connections()
+
+    def _create_connections(self):
+        for node, other_node in combinations(self.nodes, 2):
+            should_connect = self.connection_factory(node, other_node)
+            if should_connect:
+                node.connect(other_node)
+            
     def __repr__(self):
         def get_connection_ids(start_node):
             return "-".join([str(node.id) for node in start_node.connections])

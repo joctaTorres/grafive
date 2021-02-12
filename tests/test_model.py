@@ -67,3 +67,22 @@ def test_graph_chromatic_number():
 
     graph = Graph(foo, bar, bar_again)
     assert graph.chromatic_number == 2
+
+
+def test_graph_connections():
+    red_one = Node(color=Color.RED)
+    red_two = Node(color=Color.RED)
+    blue_one = Node(color=Color.BLUE)
+    blue_two = Node(color=Color.BLUE)
+
+    nodes = {red_one, red_two, blue_one, blue_two}
+
+    def factory_method(node, other_node):
+        return node.color == other_node.color
+
+    graph = Graph(*nodes, connection_factory=factory_method)
+
+    assert red_one.connections == {red_two}
+    assert red_two.connections == {red_one}
+    assert blue_one.connections == {blue_two}
+    assert blue_two.connections == {blue_one}
