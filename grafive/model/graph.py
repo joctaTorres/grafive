@@ -17,6 +17,7 @@ class Node:
     color: Optional[Color] = None
     connections: Set[Node] = field(default_factory=set)
     content: Dict[Any, Any] = field(default_factory=dict)
+    update_connection_hook = None
 
     def __hash__(self):
         return self.id
@@ -35,9 +36,16 @@ class Node:
         self.connections.add(node)
         node.connections.add(self)
 
+        if self.update_connection_hook:
+            self.update_connection_hook(self)
+
     def disconnect(self, node: Node):
-        with suppress(KeyError):
-            self.connections.remove(node)
+        self.connections.discard(node)
+        node.connections.discard(self)
+
+        if self.update_connection_hook:
+            self.update_connection_hook(self)
+
 
 
 
@@ -50,6 +58,13 @@ class Graph:
         self.nodes = set(nodes)
         self.connection_factory = connection_factory
 
+        self.connections = {}
+        for node in self.nodes:
+            self.connections.update(
+                {node.id: node.connections}
+            )
+            node.update_connection_hook = self.update_connection_hook
+
         if connection_factory:
             self._create_connections()
 
@@ -58,6 +73,12 @@ class Graph:
             should_connect = self.connection_factory(node, other_node)
             if should_connect:
                 node.connect(other_node)
+    
+    def update_connection_hook(self, node):
+        self.connections.update(
+            {node.id: node.connections}
+        )
+
             
     def __repr__(self):
         def get_connection_ids(start_node):
@@ -80,4 +101,3 @@ class Graph:
             for graph_node in not_connected
             if node not in graph_node.connections
         }
-

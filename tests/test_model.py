@@ -37,9 +37,15 @@ def test_node_connect():
 
     foo.connect(bar)
     assert foo.degree == 1
+    assert bar.degree == 1
+    assert foo.connections == {bar}
+    assert bar.connections == {foo}
 
     foo.disconnect(bar)
     assert foo.degree == 0
+    assert bar.degree == 0
+    assert foo.connections == set()
+    assert bar.connections == set()
 
     # test supress
     foo.disconnect(bar)
@@ -86,3 +92,32 @@ def test_graph_connections():
     assert red_two.connections == {red_one}
     assert blue_one.connections == {blue_two}
     assert blue_two.connections == {blue_one}
+
+
+def test_graph_node_connect_hook():
+    foo = Node(1)
+    bar = Node(2)
+
+    graph = Graph(foo, bar)
+
+    assert graph.connections == {
+        1: set(),
+        2: set(),
+    }
+
+    # connection to a node updates graph connection state
+    foo.connect(bar)
+    assert foo.connections == {bar}
+    assert bar.connections == {foo}
+    assert graph.connections == {
+        1: {bar},
+        2: {foo},
+    }
+
+    foo.disconnect(bar)
+    assert foo.connections == set()
+    assert bar.connections == set()
+    assert graph.connections == {
+        1: set(),
+        2: set(),
+    }
