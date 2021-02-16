@@ -58,3 +58,15 @@ def graph_from_edge(path):
             yield (key, values)
 
     return graph_from_description(description_generator(node_connections))
+
+
+def graph_from_custom_file(path, node_callback, connection_factory):
+    """ Iterate the file line by line and uses callback to instantiate node instances """
+
+    nodes = set()
+    with open(path, "r") as nodes_file:
+        for line in nodes_file:
+            node = node_callback(line)
+            nodes.add(node)
+
+    return Graph(*nodes, connection_factory=connection_factory)
