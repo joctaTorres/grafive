@@ -70,9 +70,14 @@ class Graph:
 
         for node in self.nodes:
             key = self.connection_factory(node)
-            group = connection_groups[key]
-            node.connect_all(group)
-            group.add(node)
+            connection_groups[key].add(node)
+        
+        for group in connection_groups.values():
+            for node in group:
+                node_connections = group - {node}
+                node.connections.update(node_connections)
+                self.connections[node.id].update(node_connections)
+
 
     def update_connection_hook(self, node):
         self.connections.update({node.id: node.connections})
