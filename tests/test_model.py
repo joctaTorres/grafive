@@ -9,8 +9,8 @@ def test_node_hash_eq():
 
     assert foo != bar
 
-    foo = Node(id=42)
-    bar = Node(id=42)
+    foo = Node(node_id=42)
+    bar = Node(node_id=42)
 
     assert foo == bar
 
@@ -33,8 +33,8 @@ def test_node():
 
 
 def test_node_connect():
-    foo = Node()
-    bar = Node()
+    foo = Node(1)
+    bar = Node(2)
 
     foo.connect(bar)
     assert foo.degree == 1

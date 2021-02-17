@@ -13,13 +13,22 @@ from uuid import uuid4
 from grafive.model.color import Color
 
 
-@dataclass
 class Node:
-    id: int = field(default_factory=lambda: hash(uuid4()))
-    color: Optional[Color] = None
-    connections: Set[Node] = field(default_factory=set)
-    content: Dict[Any, Any] = field(default_factory=dict)
-    update_connection_hook = None
+    def __init__(
+        self,
+        node_id: int = None,
+        color: Optional[Color] = None,
+        connections: Set[Node] = None,
+        content: Dict[Any, Any] = None
+    ):
+        self.id = node_id or hash(uuid4())
+        self.color = color
+        self._connections: Set[Node] = connections or set()
+        self.content: Dict[Any, Any] = content or {}
+
+        # hooks
+        self.update_connection_hook = None
+        self.use_connection_hook = None
 
     def __hash__(self):
         return self.id
@@ -31,12 +40,19 @@ class Node:
         return f"Node(id={self.id}, color={self.color}, content={self.content})"
 
     @property
+    def connections(self):
+        if self.use_connection_hook:
+            return self.use_connection_hook(self)
+
+        return self._connections
+
+    @property
     def degree(self):
         return len(self.connections)
 
     def connect(self, node: Node):
-        self.connections.add(node)
-        node.connections.add(self)
+        self._connections.add(node)
+        node._connections.add(self)
 
         if self.update_connection_hook:
             self.update_connection_hook(self)
@@ -46,8 +62,8 @@ class Node:
             self.connect(node)
 
     def disconnect(self, node: Node):
-        self.connections.discard(node)
-        node.connections.discard(self)
+        self._connections.discard(node)
+        node._connections.discard(self)
 
         if self.update_connection_hook:
             self.update_connection_hook(self)
@@ -62,6 +78,8 @@ class Graph:
         for node in self.nodes:
             self.connections.update({node.id: node.connections})
             node.update_connection_hook = self.update_connection_hook
+            node.use_connection_hook = self.use_connection_hook
+            
 
         if connection_factory:
             self._create_connections()
@@ -86,6 +104,9 @@ class Graph:
 
     def update_connection_hook(self, node):
         self.connections.update({node.id: node.connections})
+
+    def use_connection_hook(self, node):
+        return self.connections[node.id]
 
     def __repr__(self):
         def get_connection_ids(start_node):
