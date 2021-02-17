@@ -1,4 +1,5 @@
 from grafive.model.color import Color
+from grafive.model.connection import ConnectionRule
 from grafive.model.graph import Graph, Node
 
 
@@ -115,6 +116,32 @@ def test_graph_multiple_connections():
     assert red_two.connections == {red_one, blue_two}
     assert blue_one.connections == {blue_two, red_one}
     assert blue_two.connections == {blue_one, red_two}
+
+
+def test_graph_connection_rule():
+    content_one = {"number": 1}
+    content_two = {"number": 2}
+
+    red_one = Node(color=Color.RED, content=content_one)
+    red_two = Node(color=Color.RED, content=content_one)
+    red_three = Node(color=Color.RED, content=content_two)
+
+    blue_one = Node(color=Color.BLUE, content=content_one)
+    blue_two = Node(color=Color.BLUE, content=content_two)
+
+    nodes = {red_one, red_two, red_three, blue_one, blue_two}
+
+    def factory_method(node):
+        # Conect if the nodes have the same color and number
+        return ConnectionRule(node.content["number"], node.color)
+
+    graph = Graph(*nodes, connection_factory=factory_method)
+
+    assert red_one.connections == {red_two}
+    assert red_two.connections == {red_one}
+    assert red_three.connections == set()
+    assert blue_one.connections == set()
+    assert blue_two.connections == set()
 
 
 def test_graph_node_connect_hook():
