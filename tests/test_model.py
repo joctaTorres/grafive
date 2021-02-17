@@ -83,8 +83,8 @@ def test_graph_connections():
 
     nodes = {red_one, red_two, blue_one, blue_two}
 
-    def factory_method(node, other_node):
-        return node.color == other_node.color
+    def factory_method(node):
+        return node.color
 
     graph = Graph(*nodes, connection_factory=factory_method)
 
