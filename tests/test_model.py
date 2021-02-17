@@ -94,6 +94,29 @@ def test_graph_connections():
     assert blue_two.connections == {blue_one}
 
 
+def test_graph_multiple_connections():
+    content_one = {"number": 1}
+    content_two = {"number": 2}
+
+    red_one = Node(color=Color.RED, content=content_one)
+    red_two = Node(color=Color.RED, content=content_two)
+
+    blue_one = Node(color=Color.BLUE, content=content_one)
+    blue_two = Node(color=Color.BLUE, content=content_two)
+
+    nodes = {red_one, red_two, blue_one, blue_two}
+
+    def factory_method(node):
+        return node.color, node.content["number"]
+
+    graph = Graph(*nodes, connection_factory=factory_method)
+
+    assert red_one.connections == {red_two, blue_one}
+    assert red_two.connections == {red_one, blue_two}
+    assert blue_one.connections == {blue_two, red_one}
+    assert blue_two.connections == {blue_one, red_two}
+
+
 def test_graph_node_connect_hook():
     foo = Node(1)
     bar = Node(2)
