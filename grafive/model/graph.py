@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Callable, Set, Hashable
 from itertools import combinations
 from collections import defaultdict
+from collections.abc import Iterable
 
 from contextlib import suppress
 from dataclasses import dataclass, field
@@ -69,15 +70,19 @@ class Graph:
         connection_groups = defaultdict(set)
 
         for node in self.nodes:
-            key = self.connection_factory(node)
-            connection_groups[key].add(node)
-        
+            connection_key = self.connection_factory(node)
+            try:
+                keys = iter(connection_key)
+                for key in keys:
+                    connection_groups[key].add(node)
+            except TypeError:
+                connection_groups[connection_key].add(node)
+
         for group in connection_groups.values():
             for node in group:
                 node_connections = group - {node}
                 node.connections.update(node_connections)
                 self.connections[node.id].update(node_connections)
-
 
     def update_connection_hook(self, node):
         self.connections.update({node.id: node.connections})
