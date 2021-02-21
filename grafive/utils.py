@@ -10,7 +10,7 @@ def graph_from_description(description):
         node = nodes.get(node_id)
 
         if not node:
-            node = Node(id=int(node_id))
+            node = Node(node_id=int(node_id))
             nodes[node_id] = node
 
         return node
