@@ -99,7 +99,6 @@ class Graph:
         for group in connection_groups.values():
             for node in group:
                 node_connections = group - {node}
-                node.connections.update(node_connections)
                 self.connections[node.id].update(node_connections)
 
     def update_connection_hook(self, node):
