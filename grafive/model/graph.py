@@ -20,7 +20,7 @@ class Node:
         node_id: int = None,
         color: Optional[Color] = None,
         connections: Set[Node] = None,
-        content: Dict[Any, Any] = None
+        content: Dict[Any, Any] = None,
     ):
         self.id = node_id or hash(uuid4())
         self.color = color
@@ -80,7 +80,6 @@ class Graph:
             self.connections.update({node.id: node.connections})
             node.update_connection_hook = self.update_connection_hook
             node.use_connection_hook = self.use_connection_hook
-            
 
         if connection_factory:
             self._create_connections()
@@ -96,11 +95,6 @@ class Graph:
                     self.connection_groups[key].add(node)
             except TypeError:
                 self.connection_groups[connection_key].add(node)
-
-        # for group in connection_groups.values():
-        #     for node in group:
-        #         node_connections = group - {node}
-        #         self.connections[node.id].update(node_connections)
 
     def update_connection_hook(self, node):
         self.connections.update({node.id: node.connections})
@@ -119,6 +113,8 @@ class Graph:
             connected_nodes = self.connection_groups[connection_key]
 
         node_connections = self.connections[node.id] | (connected_nodes - {node})
+        self.connections[node.id] = node_connections
+
         return node_connections
 
     def __repr__(self):
