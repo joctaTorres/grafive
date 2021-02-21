@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pdb
 
 from typing import Callable, Set, Hashable
 from itertools import combinations
@@ -85,27 +86,40 @@ class Graph:
             self._create_connections()
 
     def _create_connections(self):
-        connection_groups = defaultdict(set)
+        self.connection_groups = defaultdict(set)
 
         for node in self.nodes:
             connection_key = self.connection_factory(node)
             try:
                 keys = iter(connection_key)
                 for key in keys:
-                    connection_groups[key].add(node)
+                    self.connection_groups[key].add(node)
             except TypeError:
-                connection_groups[connection_key].add(node)
+                self.connection_groups[connection_key].add(node)
 
-        for group in connection_groups.values():
-            for node in group:
-                node_connections = group - {node}
-                self.connections[node.id].update(node_connections)
+        # for group in connection_groups.values():
+        #     for node in group:
+        #         node_connections = group - {node}
+        #         self.connections[node.id].update(node_connections)
 
     def update_connection_hook(self, node):
         self.connections.update({node.id: node.connections})
 
     def use_connection_hook(self, node):
-        return self.connections[node.id]
+        if not self.connection_factory:
+            return self.connections[node.id]
+
+        connection_key = self.connection_factory(node)
+        try:
+            keys = iter(connection_key)
+            connected_nodes = set()
+            for key in keys:
+                connected_nodes.update(self.connection_groups[key])
+        except TypeError:
+            connected_nodes = self.connection_groups[connection_key]
+
+        node_connections = self.connections[node.id] | (connected_nodes - {node})
+        return node_connections
 
     def __repr__(self):
         def get_connection_ids(start_node):
