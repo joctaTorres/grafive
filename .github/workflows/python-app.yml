@@ -1,0 +1,31 @@
+name: Python application
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        apt-get update && apt-get install --yes build-essential
+        python -m pip install --upgrade pip
+        pip install poetry==1.1.4
+        poetry config virtualenvs.create false
+        
+        if [ -f poetry.lock ]; then poetry install; fi
+    - name: Lint
+      run: |
+        make lint
+    - name: Test
+      run: |
+        make test

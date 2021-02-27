@@ -9,7 +9,6 @@ isort:
 .PHONY: autoflake
 autoflake:
 	poetry run autoflake -r $(AUTOFLAKE_OPTIONS) --exclude snapshots --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports **/ | tee autoflake.log
-	echo "$(AUTOFLAKE_OPTIONS)" | grep -q -- '--in-place' || ! [ -s autoflake.log ]
 
 .PHONY: lint
 lint: ISORT_OPTIONS := --check-only

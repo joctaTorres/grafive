@@ -87,7 +87,7 @@ def test_graph_connections():
     def factory_method(node):
         return node.color
 
-    graph = Graph(*nodes, connection_factory=factory_method)
+    Graph(*nodes, connection_factory=factory_method)
 
     assert red_one.connections == {red_two}
     assert red_two.connections == {red_one}
@@ -110,7 +110,7 @@ def test_graph_multiple_connections():
     def factory_method(node):
         return node.color, node.content["number"]
 
-    graph = Graph(*nodes, connection_factory=factory_method)
+    Graph(*nodes, connection_factory=factory_method)
 
     assert red_one.connections == {red_two, blue_one}
     assert red_two.connections == {red_one, blue_two}
@@ -135,7 +135,7 @@ def test_graph_connection_rule():
         # Conect if the nodes have the same color and number
         return ConnectionRule(node.content["number"], node.color)
 
-    graph = Graph(*nodes, connection_factory=factory_method)
+    Graph(*nodes, connection_factory=factory_method)
 
     assert red_one.connections == {red_two}
     assert red_two.connections == {red_one}
