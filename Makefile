@@ -24,7 +24,4 @@ format: autoflake isort black
 
 .PHONY: test
 test:
-	poetry run pytest \
-		--cov-config=.coveragerc \
-		--cov=grafive \
-		./tests -vv
+	poetry run pytest ./tests
