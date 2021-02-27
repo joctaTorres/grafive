@@ -1,14 +1,14 @@
 .PHONY: black
 black:
-	poetry run black **/*.py $(BLACK_OPTIONS)
+	poetry run black **/ $(BLACK_OPTIONS)
 
 .PHONY: isort
 isort:
-	poetry run isort **/*.py --multi-line 3 --trailing-comma --line-width 88 --skip snapshots $(ISORT_OPTIONS)
+	poetry run isort **/ --multi-line 3 --trailing-comma --line-width 88 --skip snapshots $(ISORT_OPTIONS)
 
 .PHONY: autoflake
 autoflake:
-	poetry run autoflake -r $(AUTOFLAKE_OPTIONS) --exclude snapshots --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports **/*.py | tee autoflake.log
+	poetry run autoflake -r $(AUTOFLAKE_OPTIONS) --exclude snapshots --remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports **/ | tee autoflake.log
 	echo "$(AUTOFLAKE_OPTIONS)" | grep -q -- '--in-place' || ! [ -s autoflake.log ]
 
 .PHONY: lint
