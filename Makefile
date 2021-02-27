@@ -21,3 +21,8 @@ lint: autoflake isort black
 .PHONY: format
 format: AUTOFLAKE_OPTIONS := --in-place
 format: autoflake isort black
+
+.PHONY: test
+test:
+	poetry run pytest ./tests -vv
+	
