@@ -4,4 +4,3 @@ from grafive.utils import graph_from_edge
 homer = graph_from_edge("samples/homer/homer.edge")
 
 welsh_powell(homer)
-

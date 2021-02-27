@@ -5,11 +5,7 @@ from grafive.model.graph import Graph
 
 
 def welsh_powell(graph: Graph, color_generator=iterate_colors()):
-    sorted_nodes = sorted(
-        graph.nodes,
-        key=attrgetter("degree"),
-        reverse=True
-    )
+    sorted_nodes = sorted(graph.nodes, key=attrgetter("degree"), reverse=True)
 
     for node in sorted_nodes:
         if node.color:
@@ -19,16 +15,11 @@ def welsh_powell(graph: Graph, color_generator=iterate_colors()):
         node.color = color
 
         non_adjacent_nodes = {
-            node
-            for node in
-            graph.nodes_not_connected_to(node)
-            if not node.color
+            node for node in graph.nodes_not_connected_to(node) if not node.color
         }
 
         non_adjacent_nodes_sorted = sorted(
-            non_adjacent_nodes,
-            key=attrgetter("degree"),
-            reverse=True
+            non_adjacent_nodes, key=attrgetter("degree"), reverse=True
         )
 
         nodes_not_to_color = set()
@@ -36,7 +27,7 @@ def welsh_powell(graph: Graph, color_generator=iterate_colors()):
             if non_adjacent_node in nodes_not_to_color:
                 continue
             nodes_not_to_color.update(non_adjacent_node.connections)
-    
+
         nodes_to_color = non_adjacent_nodes - nodes_not_to_color
 
         for node_to_color in nodes_to_color:

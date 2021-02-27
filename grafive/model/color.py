@@ -28,23 +28,23 @@ class Color(Enum):
     AMBER = "amber"
     PEACH = "peach"
     MAROON = "maroon"
-    
 
 
 def iterate_colors():
     for color in list(Color):
         yield color
 
+
 def random_unique_color():
     colors = set()
-    r = lambda: random.randint(0,255)
+    r = lambda: random.randint(0, 255)
 
     while True:
-        color_hex = ('#%02X%02X%02X' % (r(),r(),r())) 
+        color_hex = "#%02X%02X%02X" % (r(), r(), r())
 
         while color_hex in colors:
-            color_hex = ('#%02X%02X%02X' % (r(),r(),r()))
-        
+            color_hex = "#%02X%02X%02X" % (r(), r(), r())
+
         colors.add(color_hex)
 
         yield color_hex

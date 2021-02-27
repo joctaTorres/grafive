@@ -1,14 +1,7 @@
 from __future__ import annotations
-import pdb
 
-from typing import Callable, Set, Hashable
-from itertools import combinations
 from collections import defaultdict
-from collections.abc import Iterable
-
-from contextlib import suppress
-from dataclasses import dataclass, field
-from typing import Any, Dict, Optional, Set
+from typing import Any, Callable, Dict, Hashable, Optional, Set
 from uuid import uuid4
 
 from grafive.model.color import Color
