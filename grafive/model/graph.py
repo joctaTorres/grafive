@@ -23,7 +23,10 @@ class Node:
         # hooks
         self.update_connection_hook = None
         self.use_connection_hook = None
+
+        # connection factory helpers
         self.connection_key = None
+        self.connections_found = False
 
     def __hash__(self):
         return self.id
@@ -95,7 +98,7 @@ class Graph:
         self.connections.update({node.id: node.connections})
 
     def use_connection_hook(self, node):
-        if not node.connection_key:
+        if not node.connection_key or node.connections_found:
             return self.connections[node.id]
 
         connection_key = node.connection_key
@@ -109,6 +112,7 @@ class Graph:
 
         node_connections = self.connections[node.id] | (connected_nodes - {node})
         self.connections[node.id] = node_connections
+        node.connections_found = True
 
         return node_connections
 
