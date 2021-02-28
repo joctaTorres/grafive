@@ -23,6 +23,7 @@ class Node:
         # hooks
         self.update_connection_hook = None
         self.use_connection_hook = None
+        self.connection_key = None
 
     def __hash__(self):
         return self.id
@@ -82,6 +83,7 @@ class Graph:
 
         for node in self.nodes:
             connection_key = self.connection_factory(node)
+            node.connection_key = connection_key
             try:
                 keys = iter(connection_key)
                 for key in keys:
@@ -93,10 +95,10 @@ class Graph:
         self.connections.update({node.id: node.connections})
 
     def use_connection_hook(self, node):
-        if not self.connection_factory:
+        if not node.connection_key:
             return self.connections[node.id]
 
-        connection_key = self.connection_factory(node)
+        connection_key = node.connection_key
         try:
             keys = iter(connection_key)
             connected_nodes = set()
