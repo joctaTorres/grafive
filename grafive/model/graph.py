@@ -82,6 +82,7 @@ class Graph:
             self._create_connections()
 
     def _create_connections(self):
+        # foo
         self.connection_groups = defaultdict(set)
 
         for node in self.nodes:
